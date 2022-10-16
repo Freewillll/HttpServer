@@ -31,7 +31,7 @@ Log::~Log()
 // 单例模式
 Log *Log::getInstance()
 {
-    static Log _log;
+    static Log _log;              //   free by os
     return &_log;
 }
 // 对外接口: 多个生产者
@@ -42,7 +42,7 @@ void Log::writeMsg(int level, const char *filename, const char *func, int line,
     char date[30] = {0};
     getDate(date);
     msg.append(date);
-    msg.append(" " + std::to_string(gettid()) + " ");
+    msg.append(" " + std::to_string(_gettid()) + " ");
     switch (level)
     {
     case 1:
@@ -76,7 +76,7 @@ void Log::writeMsg(int level, const char *filename, const char *func, int line,
         break;
     }
     }
-    va_list vaList;
+    va_list vaList;    //  variable length list
     va_start(vaList, format);
     char str[256] = {0};
     vsnprintf(str, sizeof(str) - 1, format, vaList);
@@ -86,13 +86,13 @@ void Log::writeMsg(int level, const char *filename, const char *func, int line,
     msg.append(filename);
     msg.append(":" + std::to_string(line));
     msg.append(":");
-    msg.append(func);
+    msg.append(func);           //    push to msg
     // 并发访问，上锁
     {
-        std::unique_lock<std::mutex> lck(_queueMtx);
+        std::unique_lock<std::mutex> lck(_queueMtx);    //   calls unlock on the mutex in its destructor
         while (_bufferA.size() >= MAX_QUEUE_SIZE)
         {
-            _writeCond.notify_one();
+            _writeCond.notify_one();   //   unlock + wait , wakeup one thread, lock target thread
             _queueCond.wait(lck);
         }
         _bufferA.push(msg);

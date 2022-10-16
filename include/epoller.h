@@ -24,7 +24,7 @@ epoll是I/O多路复用技术中，性能最好的一个。
 class Epoller
 {
 public:
-    explicit Epoller(int maxevents = 1024);
+    explicit Epoller(int maxevents = 1024);   //  avoid  Epoller test = 10;   avoid implicit convertion
     ~Epoller() = default;
     // 成员函数
     int wait(int timeout = -1);

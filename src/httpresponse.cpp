@@ -43,6 +43,7 @@ Httpresponse::Httpresponse()
     m_mmfile = nullptr;
     mmFileState = {0};
 }
+
 Httpresponse::~Httpresponse()
 {
     _unmapFile();
@@ -158,7 +159,7 @@ void Httpresponse::addContent(Buffer &buffer)
         return;
     }
     //内存映射
-    int *mmret = (int *)mmap(0, mmFileState.st_size, PROT_READ, MAP_PRIVATE, srcFd, 0);
+    int *mmret = (int *)mmap((void *)buffer.curWritePtr(), mmFileState.st_size, PROT_READ, MAP_PRIVATE, srcFd, 0);
     if (*mmret == -1)
     {
         errorContent(buffer, "File NotFound!\r\n");

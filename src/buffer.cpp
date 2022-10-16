@@ -66,7 +66,7 @@ ssize_t Buffer::recvFd(int sockfd, int *Errno)
     iov[1].iov_base = extraBuf;
     iov[1].iov_len = sizeof(extraBuf);
     // 调用readv
-    int len = readv(sockfd, iov, 2);
+    int len = readv(sockfd, iov, 2);    // the len of sockfd read
     if(len < 0)
     {
         // 错误发生
@@ -77,13 +77,14 @@ ssize_t Buffer::recvFd(int sockfd, int *Errno)
         // 读取到的数据，没有写入到extraBuf中国
         m_writePos += len;
     }
-    else
+    else             //  expense the buffer and  write extraBuf (len - writeable)
     {
         m_writePos = _size();
         append(extraBuf, len - writeable);
     }
     return len;
 }
+
 ssize_t Buffer::writeFd(int sockfd, int *Errno)
 {
     // 调用send函数，向sockfd中发送数据
@@ -160,7 +161,7 @@ void Buffer::ensureWriteable(size_t len)
     size_t res = _size() - m_writePos;
     if (res < len)
     {
-        allocateSpace(len);
+        allocateSpace(len);   //    dilatation    2 x (len + writelen)
     }
     res = _size() - m_writePos;
     if (res < len)
@@ -175,7 +176,7 @@ void Buffer::allocateSpace(size_t len)
     char *newdata = new char[newlen];
     for (size_t i = 0; i < m_writePos; ++i)
     {
-        newdata[i] = std::move(m_elements[i]);
+        newdata[i] = std::move(m_elements[i]);    //  right value reference    m_elements is
     }
     delete[] m_elements;
     m_elements = newdata;

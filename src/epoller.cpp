@@ -5,10 +5,10 @@ Epoller::Epoller(int maxevents)
 
 int Epoller::wait(int timeout)
 {
-    int nums = epoll_wait(m_epollFd, &m_epEves[0], static_cast<int>(m_epEves.size()), timeout);
-    return nums;
+    int nums = epoll_wait(m_epollFd, &m_epEves[0], static_cast<int>(m_epEves.size()), timeout);    //  wait fd event
+    return nums;    // the nums of event
 }
-bool Epoller::add(int fd, uint32_t ev)
+bool Epoller::add(int fd, uint32_t ev)    // add
 {
     if (fd < 0)
     {
@@ -20,7 +20,7 @@ bool Epoller::add(int fd, uint32_t ev)
     epoll_ctl(m_epollFd, EPOLL_CTL_ADD, fd, &event);
     return true;
 }
-bool Epoller::mod(int fd, uint32_t ev)
+bool Epoller::mod(int fd, uint32_t ev)    //  update
 {
     if (fd < 0)
     {
@@ -32,7 +32,7 @@ bool Epoller::mod(int fd, uint32_t ev)
     epoll_ctl(m_epollFd, EPOLL_CTL_MOD, fd, &event);
     return true;
 }
-bool Epoller::del(int fd)
+bool Epoller::del(int fd)    //   del
 {
     if (fd < 0)
     {

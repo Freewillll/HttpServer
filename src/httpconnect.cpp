@@ -46,12 +46,13 @@ ssize_t Httpconnection::readBuffer(int *saveErrno)
     ssize_t sum = 0;
     while(true)
     {
-        len = m_readBuf.recvFd(m_fd, saveErrno);
+        len = m_readBuf.recvFd(m_fd, saveErrno);          //   write to buffer
         if(len < 0) { break; }
         sum += len;
     }
     return sum;
 }
+
 ssize_t Httpconnection::writeBuffer(int *saveErrno)
 {
     ssize_t len = -1;
