@@ -47,7 +47,7 @@ bool Httprequest::parse(Buffer &buff)
     }
     while (buff.readableBytes() && m_state != PARSE_STATE::FINISH)
     {
-        const char *lineEnd = std::search(buff.curReadPtr(), buff.curWritePtr(), CRLF, CRLF + 2);
+        const char *lineEnd = std::search(buff.curReadPtr(), buff.curWritePtr(), CRLF, CRLF + 2);     //   read one line
         std::string line(buff.curReadPtr(), lineEnd); // 一行内容
         // 有限状态机
         switch (m_state)
@@ -96,7 +96,7 @@ bool Httprequest::_parseRequestLine(const std::string &line) //解析请求行
 {
     // printf("function:Httprequest::_parseRequestLine(const std::string &line)\n");
     // 使用C++11的正则表达式进行查找
-    std::regex patten("^([^ ]*) ([^ ]*) HTTP/([^ ]*)$"); //
+    std::regex patten("^([^ ]*) ([^ ]*) HTTP/([^ ]*)$"); //  request line    (method   url   version)
     std::smatch subMatch;                                // 存储查找得到的结果？
     if (std::regex_match(line, subMatch, patten))
     {

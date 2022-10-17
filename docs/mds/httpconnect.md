@@ -131,9 +131,9 @@ bool parse(Buffer &buff); //解析HTTP请求
 
 几个私有函数如下所示：
 ```cpp
-    bool _parseRequestLine(const std::string &line);   //解析请求行
-    void _parseRequestHeader(const std::string &line); //解析请求头
-    void _parseDataBody(const std::string &line);      //解析数据体
+    bool _parseRequestLine(const std::string &line);   //解析请求行   (method(post get put...) url  http_version)
+    void _parseRequestHeader(const std::string &line); //解析请求头   (content-type connection content-length ...)
+    void _parseDataBody(const std::string &line);      //解析数据体   (data body)
     void _parsePath();                                 //解析请求资源的网址
 ```
 Httprequest请求解析类的工作流程通过这几个函数就做完了，具体的细节大家可以去查看一下源代码，还是比较简单的。
@@ -164,6 +164,11 @@ Httprequest请求解析类的工作流程通过这几个函数就做完了，具
     static const std::unordered_map<int, std::string> CODE_STATUS;
     static const std::unordered_map<int, std::string> CODE_PATH;
 ```
+常规文件操作需要从磁盘到页缓存再到用户主存的两次数据拷贝。而mmap操控文件，只需要从磁盘到用户主存的一次数据拷贝过程。说白了，mmap的关键点是实现了用户空间和内核空间的数据直接交互而省去了空间不同数据不通的繁琐过程。因此mmap效率更高
+```c++
+int *mmret = (int *)mmap((void *)buffer.curWritePtr(), mmFileState.st_size, PROT_READ, MAP_PRIVATE, srcFd, 0);
+```
+
 
 ### Httpresponse任务流程介绍
 

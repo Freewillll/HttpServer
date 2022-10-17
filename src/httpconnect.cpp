@@ -132,7 +132,7 @@ bool Httpconnection::handleHTTPConn()
         m_response.init(srcDir, m_request.path(), false, 400);
     }
     // 开始查找资源，并填写响应报文
-    bool ret = m_response.makeResponse(m_writeBuf);
+    bool ret = m_response.makeResponse(m_writeBuf);     //    write to writeBuf
     m_iov[0].iov_base = const_cast<char *>(m_writeBuf.curReadPtr());
     m_iov[0].iov_len = m_writeBuf.readableBytes();
 

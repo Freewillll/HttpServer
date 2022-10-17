@@ -46,7 +46,7 @@ public:
     std::string version() const;
     // std::string getPost(const std::string &key) const;
     // std::string getPost(const char *key) const;
-    bool isKeepAlive() const;
+    bool isKeepAlive() const;     // long connection
 
 private:
     bool _parseRequestLine(const std::string &line);   //解析请求行
