@@ -59,7 +59,7 @@ ThreadPool<T>::ThreadPool(unsigned int t_nums, unsigned int j_nums)
     m_thread_num = t_nums;
     m_queue_len = j_nums;
     // 初始化信号量，表示job队列资源的信号量不变，互斥锁的信号量初始化为1
-    sem_init(&sem_job_src, 0, 0);
+    sem_init(&sem_job_src, 0, 0);    //   pshared:   0  share between threads  !0: share between progress
     sem_init(&sem_job_empty, 0, m_queue_len);
     sem_init(&sem_mutex, 0, 1);
     // 初始化线程池状态

@@ -31,7 +31,7 @@ public:
                         else if(pool->isClosed) break;
                         else pool->cond.wait(locker);
                     }
-                }).detach();
+                }).detach();  //  main thread do not wait child thread
             }
     }
 

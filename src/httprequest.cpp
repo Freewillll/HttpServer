@@ -211,13 +211,13 @@ void Httprequest::URLdecode(std::string &str)
         switch (ch)
         {
         case '=':
-            key = m_body.substr(j, i - j);
+            key = m_body.substr(j, i - j);      //    key1 = value1 & key2 = value2
             j = i + 1;
             break;
-        case '+':
+        case '+':            //   +  : ' '
             m_body[i] = ' ';
             break;
-        case '%':
+        case '%':             //    %ascii
             num = ConverHex(m_body[i + 1]) * 16 + ConverHex(m_body[i + 2]);
             m_body[i + 2] = num % 10 + '0';
             m_body[i + 1] = num / 10 + '0';

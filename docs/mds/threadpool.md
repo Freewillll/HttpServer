@@ -68,7 +68,32 @@ std::queue<std::function<void()>> m_jobQueue; // 工作队列
 std::vector<std::thread> m_workThreads; // 线程
 ```
 
-对外接口`append`函数中，除了上述提到的template模板，还使用了C++11的【右值引用】、【完美转发】、【function】以及【信号量】。右值引用和完美转发一般来说是都会是成对出现的。使用右值引用的原因是为了能够让函数能够接受临时变量作为参数，而完美转发简单来说是让左值始终是左值，右值始终是右值，不改变变量在这方面的属性。function是一个通用的多态函数包装器。在这可以理解成一种不定类型函数，向队列中添加任何类型的函数都不会发生冲突。
+对外接口`append`函数中，除了上述提到的template模板，还使用了C++11的【右值引用】、【完美转发】、【function】以及【信号量】。右值引用和完美转发一般来说是都会是成对出现的。使用右值引用的原因是为了能够让函数能够接受临时变量作为参数，而完美转发简单来说是让左值始终是左值，右值始终是右值，不改变变量在这方面的属性。
+```c++
+class CData{
+    CData (std::string&& t){
+        std::cout<<...;
+    }
+    CData (const std::string& t){
+        std::cout<<...;
+    }
+};
+template<typename T>
+CData Creator(T&& str){
+    return new CData(str);
+}
+
+CData Creator(T&& str){
+    return new CData(std::forward<T> str);   // perfect forward 
+}
+
+std::move()   //   convert lvalue to rvalue and delete lvalue) 
+
+queue.push(Data(1, 2))
+queue.emplace(Data(1, 2))  
+queue.emplace(1, 2)    //  emplace will call constructor
+```
+function是一个通用的多态函数包装器。在这可以理解成一种不定类型函数，向队列中添加任何类型的函数都不会发生冲突。
 
 在外部调用对外接口`append`时，我们应该如何传递参数呢？这里就要用到C++11的`bind`了：
 
