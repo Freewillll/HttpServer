@@ -57,7 +57,7 @@ public:
 
 class TimeManager
 {
-    typedef std::shared_ptr<Timenode> SP_Timenode;
+    typedef std::shared_ptr<Timenode> SP_Timenode;     //
 
 public:
     TimeManager();
@@ -72,7 +72,7 @@ public:
         
         if(m_ref.count(fd))
         {
-            int pos = m_ref[fd];
+            int pos = m_ref[fd];    //   value
             // LOG_DEBUG("input fd: %d, fd's pos: %d", fd, pos);
             m_del(pos);
         }
@@ -83,7 +83,7 @@ public:
         }
     }
     void work(int id);
-    void pop();
+    void pop();     //  pop(0)
     void clear();
 private:
     

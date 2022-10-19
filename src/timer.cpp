@@ -18,10 +18,10 @@ void TimeManager::m_del(int i)
     // LOG_DEBUG("j:%d, n:%d", j, n);
     if (j < n)
     {
-        swapNode(j, n);
-        if (!sink(j, n))
+        swapNode(j, n);     //  swap j and n
+        if (!sink(j, n))   //  compare the child iteratively
         {
-            swim(j);
+            swim(j);         //  compare the parent
         }
     }
     /* 删除队尾元素 */
@@ -65,7 +65,7 @@ bool TimeManager::sink(int i, int n)
         return false;
     }
     int j = i;
-    int k = j * 2 + 1;
+    int k = j * 2 + 1;    //  left child
     while (k < n)
     {
         if (k + 1 < n && m_heap[k + 1] < m_heap[k])
@@ -134,7 +134,7 @@ void TimeManager::handleExpiredEvent()
     {
         // printf("m_heap不为空，正在处理过时连接\n");
         Timenode node = m_heap.front();
-        int64_t resTime = std::chrono::duration_cast<_ms>(node.m_expire - _clock::now()).count();
+        int64_t resTime = std::chrono::duration_cast<_ms>(node.m_expire - _clock::now()).count();   //  integer scale conversion with precision loss
         if ( resTime > 0)
         {
             /*

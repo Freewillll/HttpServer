@@ -66,8 +66,8 @@ private:
     {                                                \
         Log *log = Log::getInstance();               \
         log->writeMsg(level, filename, func, line, format, ##__VA_ARGS__); \
-    } while (0);
-#define LOG_DEBUG(format, ...) LOG_BASE(2, __FILE__, __func__ , __LINE__, format, ##__VA_ARGS__)
+    } while (0);            //   __VA_ARGS__  is variable param list
+#define LOG_DEBUG(format, ...) LOG_BASE(2, __FILE__, __func__ , __LINE__, format, ##__VA_ARGS__)    //   __FILE__ : filename    __func__:  function name    __LINE__:  line nums
 #define LOG_INFO(format, ...) LOG_BASE(3, __FILE__, __func__ , __LINE__, format, ##__VA_ARGS__)
 #define LOG_WARN(format, ...) LOG_BASE(4, __FILE__, __func__ , __LINE__, format, ##__VA_ARGS__)
 #define LOG_ERROR(format, ...) LOG_BASE(5, __FILE__, __func__ , __LINE__, format, ##__VA_ARGS__)

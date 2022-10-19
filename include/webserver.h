@@ -58,7 +58,7 @@ private:
     uint32_t m_listenEvent;
     uint32_t m_connectEvent;
 
-    std::unique_ptr<TimeManager> m_timer;
+    std::unique_ptr<TimeManager> m_timer;      //   socket time manager
     
     //std::unique_ptr<ThreadPool<Httpconnection>> m_pool;
     // std::unique_ptr<Threadpool> m_poolV2;

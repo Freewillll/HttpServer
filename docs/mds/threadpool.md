@@ -70,6 +70,8 @@ std::vector<std::thread> m_workThreads; // 线程
 
 对外接口`append`函数中，除了上述提到的template模板，还使用了C++11的【右值引用】、【完美转发】、【function】以及【信号量】。右值引用和完美转发一般来说是都会是成对出现的。使用右值引用的原因是为了能够让函数能够接受临时变量作为参数，而完美转发简单来说是让左值始终是左值，右值始终是右值，不改变变量在这方面的属性。
 ```c++
+Perfect forward
+
 class CData{
     CData (std::string&& t){
         std::cout<<...;
@@ -92,6 +94,21 @@ std::move()   //   convert lvalue to rvalue and delete lvalue)
 queue.push(Data(1, 2))
 queue.emplace(Data(1, 2))  
 queue.emplace(1, 2)    //  emplace will call constructor
+```
+
+```c++
+Lambda function
+
+[ capture ] ( params ) opt -> ret {body;};
+
+carpture是捕获列表，params是参数，opt是选项，ret则是返回值的类型，body则是函数的具体实现
+
+[] :表示不捕获任何变量
+[=]：表示按值捕获变量
+[&]：表示按引用捕获变量
+[this]：值传递捕获当前的this
+但是捕获列表不允许变量的重复传递: [=, x]
+[=, &a, &b]表示以引用传递的方式捕捉变量a和b，以值传递方式捕捉其它所有变量
 ```
 function是一个通用的多态函数包装器。在这可以理解成一种不定类型函数，向队列中添加任何类型的函数都不会发生冲突。
 
