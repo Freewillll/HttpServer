@@ -8,7 +8,7 @@ Webserver::Webserver(int port, int t, int trigMode, int threadNum)
     strcat(m_srcDir, "/resources");
     Httpconnection::srcDir = m_srcDir;
     initEventMode(trigMode); // 设置服务器的epoll工作模式：LT or ET？
-    m_isclose = (initSocket() ? false : true);
+    m_isclose = (initSocket() ? false : true);            //   init socket
 }
 // 对服务器程序进行初始化的函数
 void Webserver::initEventMode(int trigMode)
@@ -43,7 +43,7 @@ void Webserver::initEventMode(int trigMode)
 }
 bool Webserver::initSocket()
 {
-    m_listenFd = socket(AF_INET, SOCK_STREAM, 0);
+    m_listenFd = socket(AF_INET, SOCK_STREAM, 0);    //  create ipv4 socket
     if (m_listenFd < 0)
     {
         LOG_ERROR("m_listenFd error");
@@ -131,7 +131,7 @@ void Webserver::start()
         int waitTime = -1;
         if (m_timeoutMs > 0)
         {
-            waitTime = m_timer->getNextHandle();
+            waitTime = m_timer->getNextHandle();    //   handle expire time event and return the smallest wait time
         }
         // 调用epoll监听
         int eventCnt = m_epoller->wait(waitTime);
@@ -185,7 +185,7 @@ void Webserver::handleListen()
     do
     {
         // std::cout << "handleListen:" << i++ << std::endl;
-        int cfd = accept(m_listenFd, (struct sockaddr *)&caddr, &len);
+        int cfd = accept(m_listenFd, (struct sockaddr *)&caddr, &len);   //  return a new connected socket_fd
         if (cfd < 0)
         {
             return;

@@ -28,7 +28,7 @@ public:
     ~Epoller() = default;
     // 成员函数
     int wait(int timeout = -1);
-    bool add(int fd, uint32_t ev);
+    bool add(int fd, uint32_t ev);   //  add epoll_event
     bool mod(int fd, uint32_t ev);
     bool del(int fd);
     //对外要使用的接口

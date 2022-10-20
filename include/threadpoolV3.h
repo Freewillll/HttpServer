@@ -18,7 +18,7 @@ public:
     explicit ThreadPool(size_t threadCount = 8): pool_(std::make_shared<Pool>()) {
             assert(threadCount > 0);
             for(size_t i = 0; i < threadCount; i++) {
-                std::thread([pool = pool_] {     // c++ 14 features   initialized lambda capture s
+                std::thread([pool = pool_] {     // c++ 14 features   initialized lambda capture
                     std::unique_lock<std::mutex> locker(pool->mtx);
                     while(true) {
                         if(!pool->tasks.empty()) {
