@@ -1,7 +1,13 @@
 ## webserver介绍
 
 这个webserver类是对整个web服务器的抽象。在这个类中，调用之前编写的四大模块：Httpconnection类、Epoller类、Timer类以及ThreadPool类完成整个服务器项目的功能。
+establish 
 
+socket connection;
+epoller is used to listen the io;
+timeManager is used to manage the http connection which is a time node;
+#### the connection of socket
+![img_1.png](img_1.png)
 ### webserver的逻辑
 
 第一步是服务器的初始化。在webserver的构造函数中完成对Httpconnection类、Epoller类、Timer类以及ThreadPool类对象的初始化，同时还需要设置好服务器的socket，暴露端口等相关信息

@@ -14,6 +14,14 @@ Webserver::Webserver(int port, int t, int trigMode, int threadNum)
 void Webserver::initEventMode(int trigMode)
 {
     // EPOLLRDHUP宏，底层处理socket连接断开的情况
+//    EPOLLIN  表示对应的文件描述符可以读
+//    EPOLLOUT 表示对应的文件描述符可以写
+//    EPOLLPRI 表示对应的文件描述符有紧急的数据可读
+//    EPOLLERR 表示对应的文件描述符发生错误
+//    EPOLLHUP 表示对应的文件描述符被挂断
+//    EPOLLET  表示对应的文件描述符有事件发生
+
+
     m_listenEvent = EPOLLRDHUP;
     /* EPOLLONESHOT 和 ET模式不尽相同：
     前者是防止一个客户端发送的数据被多个线程分散读取；
@@ -41,7 +49,7 @@ void Webserver::initEventMode(int trigMode)
     }
     Httpconnection::isET = m_connectEvent & EPOLLET;
 }
-bool Webserver::initSocket()
+bool Webserver::initSocket()     //   create -> bind -> listen
 {
     m_listenFd = socket(AF_INET, SOCK_STREAM, 0);    //  create ipv4 socket
     if (m_listenFd < 0)
@@ -73,7 +81,7 @@ bool Webserver::initSocket()
     // }
     // 在bind之前设置【端口复用】
     int reuse = 1;
-    int ret = setsockopt(m_listenFd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+    int ret = setsockopt(m_listenFd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));    //   the event is on the listenFd
     if (ret < 0)
     {
         LOG_ERROR("error setsockopt");
@@ -176,7 +184,7 @@ void Webserver::start()
 }
 
 // 核心成员函数：处理新连接情况
-void Webserver::handleListen()
+void Webserver::handleListen()    //  connect the client and server
 {
 
     struct sockaddr_in caddr;
@@ -185,7 +193,7 @@ void Webserver::handleListen()
     do
     {
         // std::cout << "handleListen:" << i++ << std::endl;
-        int cfd = accept(m_listenFd, (struct sockaddr *)&caddr, &len);   //  return a new connected socket_fd
+        int cfd = accept(m_listenFd, (struct sockaddr *)&caddr, &len);   //  return a new connected socket_fd  connect the server and the client
         if (cfd < 0)
         {
             return;
